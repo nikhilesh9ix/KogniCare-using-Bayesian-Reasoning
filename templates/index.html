@@ -767,6 +767,218 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* Bayesian Network Analysis Styles */
+        .bayesian-card {
+            grid-column: span 2;
+        }
+
+        .bayesian-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .confidence-indicator, .risk-indicator {
+            text-align: center;
+        }
+
+        .confidence-label, .risk-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .confidence-value, .risk-value {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+
+        .confidence-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ef4444 0%, #f59e0b 50%, #10b981 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .risk-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .risk-status.stable {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .risk-status.at-risk {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .risk-status.critical {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .probability-section {
+            margin-bottom: 20px;
+        }
+
+        .condition-probabilities {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .condition-item {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .condition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .condition-name {
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .condition-max-prob {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 14px;
+        }
+
+        .probability-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .prob-bar {
+            display: grid;
+            grid-template-columns: 60px 1fr 40px;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .prob-label {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .prob-track {
+            height: 6px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .prob-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        .prob-fill.critical {
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+        }
+
+        .prob-fill.warning {
+            background: linear-gradient(90deg, #f59e0b, #d97706);
+        }
+
+        .prob-fill.normal {
+            background: linear-gradient(90deg, #10b981, #059669);
+        }
+
+        .prob-value {
+            font-size: 11px;
+            color: #374151;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .uncertainty-section {
+            background: #fafbfc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .uncertainty-factors {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .uncertainty-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #4b5563;
+            padding: 4px 0;
+        }
+
+        .uncertainty-item i {
+            flex-shrink: 0;
+        }
+
+        /* Responsive adjustments for Bayesian panel */
+        @media (max-width: 1200px) {
+            .bayesian-card {
+                grid-column: span 2;
+            }
+            
+            .bayesian-summary {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .bayesian-summary {
+                padding: 12px;
+            }
+            
+            .prob-bar {
+                grid-template-columns: 50px 1fr 35px;
+                gap: 6px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -914,6 +1126,136 @@
             </div>
         </div>
 
+        <!-- Bayesian Network Analysis -->
+        <div class="card bayesian-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-brain"></i>
+                    Bayesian Network Analysis
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn" onclick="refreshBayesianAnalysis()">
+                        <i class="fas fa-sync"></i>
+                        Refresh
+                    </button>
+                    <button class="btn" onclick="showBayesianExplanation()">
+                        <i class="fas fa-info-circle"></i>
+                        Explain
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Confidence and Risk Assessment -->
+            <div class="bayesian-summary">
+                <div class="confidence-indicator">
+                    <div class="confidence-label">Confidence Level</div>
+                    <div class="confidence-value" id="confidenceLevel">Medium</div>
+                    <div class="confidence-bar">
+                        <div class="confidence-fill" id="confidenceFill" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="risk-indicator">
+                    <div class="risk-label">Risk Assessment</div>
+                    <div class="risk-value" id="riskLevel">Low</div>
+                    <div class="risk-status" id="riskStatus">stable</div>
+                </div>
+            </div>
+            
+            <!-- Probability Distributions -->
+            <div class="probability-section">
+                <h4 style="margin: 16px 0 12px; color: #374151; font-size: 14px;">
+                    <i class="fas fa-percentage"></i> Probability Distributions
+                </h4>
+                
+                <div class="condition-probabilities">
+                    <!-- Heart Failure -->
+                    <div class="condition-item">
+                        <div class="condition-header">
+                            <span class="condition-name">Heart Failure</span>
+                            <span class="condition-max-prob" id="hfMaxProb">5.2%</span>
+                        </div>
+                        <div class="probability-bars">
+                            <div class="prob-bar">
+                                <span class="prob-label">Severe</span>
+                                <div class="prob-track">
+                                    <div class="prob-fill critical" id="hfSevere" style="width: 5%"></div>
+                                </div>
+                                <span class="prob-value" id="hfSevereValue">5%</span>
+                            </div>
+                            <div class="prob-bar">
+                                <span class="prob-label">Mild</span>
+                                <div class="prob-track">
+                                    <div class="prob-fill warning" id="hfMild" style="width: 12%"></div>
+                                </div>
+                                <span class="prob-value" id="hfMildValue">12%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Sepsis -->
+                    <div class="condition-item">
+                        <div class="condition-header">
+                            <span class="condition-name">Sepsis</span>
+                            <span class="condition-max-prob" id="sepsisMaxProb">3.1%</span>
+                        </div>
+                        <div class="probability-bars">
+                            <div class="prob-bar">
+                                <span class="prob-label">Severe</span>
+                                <div class="prob-track">
+                                    <div class="prob-fill critical" id="sepsisSevere" style="width: 2%"></div>
+                                </div>
+                                <span class="prob-value" id="sepsisSevereValue">2%</span>
+                            </div>
+                            <div class="prob-bar">
+                                <span class="prob-label">Mild</span>
+                                <div class="prob-track">
+                                    <div class="prob-fill warning" id="sepsisMild" style="width: 8%"></div>
+                                </div>
+                                <span class="prob-value" id="sepsisMildValue">8%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Respiratory Distress -->
+                    <div class="condition-item">
+                        <div class="condition-header">
+                            <span class="condition-name">Respiratory Distress</span>
+                            <span class="condition-max-prob" id="rdMaxProb">4.7%</span>
+                        </div>
+                        <div class="probability-bars">
+                            <div class="prob-bar">
+                                <span class="prob-label">Severe</span>
+                                <div class="prob-track">
+                                    <div class="prob-fill critical" id="rdSevere" style="width: 3%"></div>
+                                </div>
+                                <span class="prob-value" id="rdSevereValue">3%</span>
+                            </div>
+                            <div class="prob-bar">
+                                <span class="prob-label">Mild</span>
+                                <div class="prob-track">
+                                    <div class="prob-fill warning" id="rdMild" style="width: 15%"></div>
+                                </div>
+                                <span class="prob-value" id="rdMildValue">15%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Uncertainty Analysis -->
+            <div class="uncertainty-section">
+                <h4 style="margin: 16px 0 8px; color: #374151; font-size: 14px;">
+                    <i class="fas fa-question-circle"></i> Uncertainty Analysis
+                </h4>
+                <div class="uncertainty-factors" id="uncertaintyFactors">
+                    <div class="uncertainty-item">
+                        <i class="fas fa-circle" style="color: #10b981; font-size: 6px;"></i>
+                        All vital signs within normal ranges
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Camera & AI Analysis -->
         <div class="card camera-card">
             <div class="card-header">
@@ -925,7 +1267,7 @@
             <div class="video-container">
                 <div class="video-feed" id="videoFeed" onclick="toggleVideoFeed()">
                     <video id="patientVideo" autoplay muted loop>
-                        <source src="/static/Hospital_Patient_Monitoring_Video_Generation.mp4" type="video/mp4">
+                        <source src="/static/media/Hospital_Patient_Monitoring_Video_Generation.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <div class="video-placeholder" id="videoPlaceholder">
@@ -1168,6 +1510,9 @@
                 // Update chart
                 updateChart(vitals);
                 
+                // Update Bayesian analysis
+                updateBayesianAnalysis(vitals);
+                
                 // Update connection status
                 document.getElementById('connectionStatus').textContent = 'Connected';
                 
@@ -1322,13 +1667,43 @@
                 // Start video
                 video.style.display = 'block';
                 placeholder.style.display = 'none';
-                video.play();
-                statusText.textContent = 'Live';
-                isVideoActive = true;
                 
-                // Update AI analysis to reflect video monitoring
-                document.getElementById('aiAnalysis').textContent = 'Monitoring patient via video feed';
-                document.getElementById('activityLevel').textContent = 'Video analysis active';
+                // Add error handling for video loading
+                video.addEventListener('loadstart', function() {
+                    console.log('Video loading started...');
+                    statusText.textContent = 'Loading...';
+                });
+                
+                video.addEventListener('canplay', function() {
+                    console.log('Video can start playing');
+                    statusText.textContent = 'Live';
+                });
+                
+                video.addEventListener('error', function(e) {
+                    console.error('Video error:', e);
+                    statusText.textContent = 'Error - Check video file';
+                    placeholder.style.display = 'block';
+                    video.style.display = 'none';
+                    alert('Video could not be loaded. Please check:\n1. Video file exists in static/media/\n2. Server is running\n3. Browser supports MP4 format');
+                    return;
+                });
+                
+                // Try to play the video
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('Video started playing successfully');
+                        isVideoActive = true;
+                        // Update AI analysis to reflect video monitoring
+                        document.getElementById('aiAnalysis').textContent = 'Monitoring patient via video feed';
+                        document.getElementById('activityLevel').textContent = 'Video analysis active';
+                    }).catch(error => {
+                        console.error('Error playing video:', error);
+                        statusText.textContent = 'Playback Error';
+                        placeholder.style.display = 'block';
+                        video.style.display = 'none';
+                    });
+                }
             } else {
                 // Stop video
                 video.style.display = 'none';
@@ -1341,6 +1716,27 @@
                 document.getElementById('aiAnalysis').textContent = 'Patient appears comfortable and resting';
                 document.getElementById('activityLevel').textContent = 'Low movement';
             }
+        }
+
+        // Test video file accessibility (for debugging)
+        function testVideoFile() {
+            const video = document.getElementById('patientVideo');
+            const videoSrc = video.querySelector('source').src;
+            console.log('Testing video file:', videoSrc);
+            
+            fetch(videoSrc)
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ Video file is accessible');
+                        console.log('Response status:', response.status);
+                        console.log('Content-Type:', response.headers.get('content-type'));
+                    } else {
+                        console.error('❌ Video file not accessible:', response.status, response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Error accessing video file:', error);
+                });
         }
 
         // Toggle chatbot
@@ -1504,6 +1900,154 @@
                 
             } catch (error) {
                 console.warn('Could not check system status:', error);
+            }
+        }
+
+        // Bayesian Network Analysis Functions
+        async function updateBayesianAnalysis(vitals) {
+            try {
+                const response = await fetch(`${API_BASE}/api/bayesian/analysis`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    updateBayesianUI(data.analysis);
+                }
+            } catch (error) {
+                console.error('Error updating Bayesian analysis:', error);
+            }
+        }
+
+        function updateBayesianUI(analysis) {
+            try {
+                const uncertaintyMetrics = analysis.uncertainty_metrics || {};
+                const riskAssessment = analysis.risk_assessment || {};
+                const bayesianInference = analysis.bayesian_inference || {};
+                
+                // Update confidence level
+                const confidenceLevel = uncertaintyMetrics.overall_confidence || 'medium';
+                const confidenceScore = uncertaintyMetrics.confidence_score || 0.5;
+                
+                document.getElementById('confidenceLevel').textContent = confidenceLevel.charAt(0).toUpperCase() + confidenceLevel.slice(1);
+                document.getElementById('confidenceFill').style.width = `${confidenceScore * 100}%`;
+                
+                // Update risk assessment
+                const riskLevel = riskAssessment.risk_level || 'low';
+                const riskStatus = riskAssessment.primary_concern?.condition === 'No significant concerns' ? 'stable' : 'at-risk';
+                
+                document.getElementById('riskLevel').textContent = riskLevel.charAt(0).toUpperCase() + riskLevel.slice(1);
+                document.getElementById('riskStatus').textContent = riskStatus;
+                document.getElementById('riskStatus').className = `risk-status ${riskStatus}`;
+                
+                // Update condition probabilities
+                updateConditionProbabilities('hf', bayesianInference.heart_failure || {});
+                updateConditionProbabilities('sepsis', bayesianInference.sepsis || {});
+                updateConditionProbabilities('rd', bayesianInference.respiratory_distress || {});
+                
+                // Update uncertainty factors
+                updateUncertaintyFactors(uncertaintyMetrics.uncertainty_sources || []);
+                
+            } catch (error) {
+                console.error('Error updating Bayesian UI:', error);
+            }
+        }
+
+        function updateConditionProbabilities(prefix, probabilities) {
+            const severeProb = (probabilities.severe || 0) * 100;
+            const mildProb = (probabilities.mild || 0) * 100;
+            const maxProb = Math.max(severeProb, mildProb);
+            
+            // Update max probability display
+            const maxProbElement = document.getElementById(`${prefix}MaxProb`);
+            if (maxProbElement) {
+                maxProbElement.textContent = `${maxProb.toFixed(1)}%`;
+            }
+            
+            // Update severe probability
+            const severeElement = document.getElementById(`${prefix}Severe`);
+            const severeValueElement = document.getElementById(`${prefix}SevereValue`);
+            if (severeElement && severeValueElement) {
+                severeElement.style.width = `${severeProb}%`;
+                severeValueElement.textContent = `${severeProb.toFixed(0)}%`;
+            }
+            
+            // Update mild probability
+            const mildElement = document.getElementById(`${prefix}Mild`);
+            const mildValueElement = document.getElementById(`${prefix}MildValue`);
+            if (mildElement && mildValueElement) {
+                mildElement.style.width = `${mildProb}%`;
+                mildValueElement.textContent = `${mildProb.toFixed(0)}%`;
+            }
+        }
+
+        function updateUncertaintyFactors(factors) {
+            const container = document.getElementById('uncertaintyFactors');
+            if (!container) return;
+            
+            if (factors.length === 0) {
+                container.innerHTML = `
+                    <div class="uncertainty-item">
+                        <i class="fas fa-circle" style="color: #10b981; font-size: 6px;"></i>
+                        All vital signs within normal ranges - high confidence analysis
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = factors.map(factor => `
+                <div class="uncertainty-item">
+                    <i class="fas fa-exclamation-triangle" style="color: #f59e0b; font-size: 8px;"></i>
+                    ${factor}
+                </div>
+            `).join('');
+        }
+
+        async function refreshBayesianAnalysis() {
+            try {
+                // Show loading state
+                document.getElementById('confidenceLevel').textContent = 'Updating...';
+                
+                // Force refresh
+                const response = await fetch(`${API_BASE}/api/vitals`);
+                const vitals = await response.json();
+                await updateBayesianAnalysis(vitals);
+                
+            } catch (error) {
+                console.error('Error refreshing Bayesian analysis:', error);
+                document.getElementById('confidenceLevel').textContent = 'Error';
+            }
+        }
+
+        async function showBayesianExplanation() {
+            try {
+                const response = await fetch(`${API_BASE}/api/bayesian/explanation`);
+                const data = await response.json();
+                
+                if (data.status === 'success') {
+                    // Create modal or detailed explanation view
+                    const explanation = data.explanation;
+                    const modalContent = `
+                        <h3>🧠 Bayesian Network Reasoning</h3>
+                        <p><strong>Query Variable:</strong> ${explanation.query_variable || 'patient_status'}</p>
+                        <p><strong>Current Evidence:</strong> ${Object.entries(explanation.evidence || {}).map(([k,v]) => `${k}=${v}`).join(', ')}</p>
+                        
+                        <h4>Probability Distribution:</h4>
+                        ${Object.entries(explanation.probabilities || {}).map(([state, prob]) => 
+                            `<div>${state}: ${(prob * 100).toFixed(1)}% ${'█'.repeat(Math.round(prob * 10))}${'░'.repeat(10 - Math.round(prob * 10))}</div>`
+                        ).join('')}
+                        
+                        <h4>Medical Reasoning:</h4>
+                        <div style="white-space: pre-wrap; font-family: monospace; background: #f8f9fa; padding: 12px; border-radius: 4px; margin: 8px 0;">
+                            ${explanation.reasoning || 'Bayesian inference analysis based on current vital signs.'}
+                        </div>
+                        
+                        <p><em>This analysis uses probabilistic reasoning to quantify diagnostic uncertainty and support evidence-based medical decision making.</em></p>
+                    `;
+                    
+                    alert(modalContent.replace(/<[^>]*>/g, '\n')); // Simple alert for now
+                }
+            } catch (error) {
+                console.error('Error getting Bayesian explanation:', error);
+                alert('Failed to get explanation. Please try again.');
             }
         }
     </script>

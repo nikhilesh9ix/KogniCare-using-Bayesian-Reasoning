@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request, send_file
 from datetime import datetime
 from src.services import vitals_simulator, ai_assistant, report_generator
+from src.services.uncertainty_service import uncertainty_service
 from src.models import Patient
 
 # Create blueprint
@@ -134,4 +135,86 @@ def system_status():
         return jsonify({
             'error': 'Failed to get system status',
             'details': str(e)
+        }), 500
+
+@api_bp.route('/bayesian/analysis')
+def get_bayesian_analysis():
+    """Get current Bayesian Network analysis of patient state"""
+    try:
+        current_vitals = vitals_simulator.get_current_vitals()
+        analysis = uncertainty_service.analyze_patient_state(current_vitals, patient_info)
+        
+        return jsonify({
+            'timestamp': datetime.now().isoformat(),
+            'analysis': analysis,
+            'status': 'success'
+        })
+    except Exception as e:
+        return jsonify({
+            'error': 'Failed to perform Bayesian analysis',
+            'details': str(e),
+            'status': 'error'
+        }), 500
+
+@api_bp.route('/bayesian/explanation')
+def get_bayesian_explanation():
+    """Get detailed explanation of Bayesian reasoning process"""
+    try:
+        query_condition = request.args.get('condition', 'patient_status')
+        explanation = uncertainty_service.explain_bayesian_reasoning(query_condition)
+        
+        return jsonify({
+            'explanation': explanation,
+            'timestamp': datetime.now().isoformat(),
+            'status': 'success'
+        })
+    except Exception as e:
+        return jsonify({
+            'error': 'Failed to generate explanation',
+            'details': str(e),
+            'status': 'error'
+        }), 500
+
+@api_bp.route('/bayesian/network')
+def get_network_structure():
+    """Get Bayesian Network structure for visualization"""
+    try:
+        structure = uncertainty_service.get_network_structure()
+        
+        return jsonify({
+            'network_structure': structure,
+            'timestamp': datetime.now().isoformat(),
+            'status': 'success'
+        })
+    except Exception as e:
+        return jsonify({
+            'error': 'Failed to get network structure',
+            'details': str(e),
+            'status': 'error'
+        }), 500
+
+@api_bp.route('/bayesian/probabilities')
+def get_probabilities():
+    """Get current probability distributions for all medical conditions"""
+    try:
+        current_vitals = vitals_simulator.get_current_vitals()
+        analysis = uncertainty_service.analyze_patient_state(current_vitals)
+        
+        # Extract probability distributions
+        probabilities = analysis.get('bayesian_inference', {})
+        uncertainty_metrics = analysis.get('uncertainty_metrics', {})
+        
+        return jsonify({
+            'probabilities': probabilities,
+            'confidence_level': uncertainty_metrics.get('overall_confidence', 'medium'),
+            'confidence_score': uncertainty_metrics.get('confidence_score', 0.5),
+            'vitals_classification': probabilities.get('vitals_classification', {}),
+            'timestamp': datetime.now().isoformat(),
+            'status': 'success'
+        })
+    except Exception as e:
+        return jsonify({
+            'error': 'Failed to get probabilities',
+            'details': str(e),
+            'status': 'error'
         }), 500
