@@ -2,7 +2,6 @@
 Bayesian Network Implementation for Medical Diagnosis
 Implements probabilistic reasoning using Bayesian Networks to manage uncertainty in patient health data
 """
-import numpy as np
 from itertools import product
 from typing import Dict, List, Tuple, Any, Optional
 import json
