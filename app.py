@@ -45,3 +45,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Create app instance for gunicorn
+app = create_app()

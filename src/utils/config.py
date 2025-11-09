@@ -12,7 +12,7 @@ class Config:
     DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
     
     # AI Service Configuration
-    OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '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')
+    OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '')
     AI_MODEL = os.environ.get('AI_MODEL', 'microsoft/phi-3.5-mini-128k-instruct')
     
     # Simulation Configuration
