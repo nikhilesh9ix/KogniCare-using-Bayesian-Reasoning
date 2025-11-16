@@ -157,9 +157,7 @@ cp .env.example .env
 
 ## Demo links (video/live deployment)
 
-- **Demo Video**: [Add your demo video link here]
-- **Live Deployment**: https://kognicare.onrender.com
-- **Presentation**: [Add presentation link if available]
+- **Live Deployment**: [https://kognicare.onrender.com](https://kognicare-using-bayesian-reasoning-1.onrender.com/)
 
 ## License
 
