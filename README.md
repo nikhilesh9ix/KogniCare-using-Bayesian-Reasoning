@@ -575,7 +575,7 @@ python -m pytest --cov=src tests/
 ## 🌐 Deployment
 
 ### Live Demo
-**Deployed Application**: [https://kognicare-using-bayesian-reasoning-1.onrender.com](https://kognicare-using-bayesian-reasoning-1.onrender.com/)
+**Deployed Application**: [https://kogni-care-using-bayesian-reasoning.vercel.app](https://kogni-care-using-bayesian-reasoning.vercel.app/)
 
 ### Deploy to Heroku
 
