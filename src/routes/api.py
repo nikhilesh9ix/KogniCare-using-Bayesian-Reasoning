@@ -9,14 +9,14 @@ api_bp = Blueprint('api', __name__, url_prefix='/api')
 
 # Patient information
 patient_info = Patient(
-    name='John Doe',
+    name='Walter White',
     age=65,
     gender='Male',
     room='ICU-201',
     admission_date='2 days ago',
     condition='Cancer',
-    attending_doctor='Dr. Sarah Wilson',
-    nurse='Emily Johnson'
+    attending_doctor='dr drake ramoray',
+    nurse='Joy'
 ).to_dict()
 
 @api_bp.route('/vitals')
