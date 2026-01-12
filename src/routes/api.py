@@ -15,7 +15,7 @@ patient_info = Patient(
     room='ICU-201',
     admission_date='2 days ago',
     condition='Cancer',
-    attending_doctor='dr drake ramoray',
+    attending_doctor='Dr. Drake Ramoray',
     nurse='Joy'
 ).to_dict()
 
